@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">JustDictionary</string>
+    <string name="query_hint">Eudaemonia</string>
+    <string name="origin">Origin</string>
+    <string name="meaning">Meaning</string>
+    <string name="noun">Noun</string>
+</resources>
