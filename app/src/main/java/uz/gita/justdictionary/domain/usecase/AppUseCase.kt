@@ -7,6 +7,6 @@ interface AppUseCase {
     fun getAllWords(): Flow<Cursor>
     fun searchWord(query: String): Flow<Cursor>
 
-    fun rememberWord(id: Int): Flow<Unit>
-    fun forgetWord(id:Int): Flow<Unit>
+    fun rememberWord(id: Long): Flow<Unit>
+    fun forgetWord(id: Long): Flow<Unit>
 }

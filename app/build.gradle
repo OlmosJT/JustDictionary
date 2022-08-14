@@ -85,4 +85,7 @@ dependencies {
 
     // ViewModel Provider
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+
+    // expandable layout
+    implementation 'com.github.cachapa:ExpandableLayout:2.9.2'
 }

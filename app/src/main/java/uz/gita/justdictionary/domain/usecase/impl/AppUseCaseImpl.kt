@@ -2,7 +2,6 @@ package uz.gita.justdictionary.domain.usecase.impl
 
 import android.database.Cursor
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import uz.gita.justdictionary.domain.repository.AppRepository
@@ -20,11 +19,11 @@ class AppUseCaseImpl @Inject constructor(
         emit(repository.searchWord(query))
     }.flowOn(Dispatchers.IO)
 
-    override fun rememberWord(id: Int) = flow<Unit> {
+    override fun rememberWord(id: Long) = flow<Unit> {
         emit(repository.rememberWord(id))
     }.flowOn(Dispatchers.IO)
 
-    override fun forgetWord(id: Int) = flow<Unit> {
+    override fun forgetWord(id: Long) = flow<Unit> {
         emit(repository.forgetWord(id))
     }.flowOn(Dispatchers.IO)
 }

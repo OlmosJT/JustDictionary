@@ -16,10 +16,10 @@
         android:background="@drawable/searchview_background"
         android:imeOptions="actionDone"
         android:inputType="textAutoCorrect"
-        android:queryBackground="@color/white"
-        android:queryHint="@string/query_hint"
+        android:queryBackground="@android:color/transparent"
         android:pointerIcon="text"
         app:showAsAction="always"
+        app:searchIcon="@drawable/ic_search"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UnusedAttribute" />
 
@@ -43,6 +43,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+
+
+    <ImageView
+        android:id="@+id/emptyCursor"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_svg_no_data"
+        tools:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -53,17 +68,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/emptyCursor"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:visibility="gone"
-        android:src="@drawable/ic_empty"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

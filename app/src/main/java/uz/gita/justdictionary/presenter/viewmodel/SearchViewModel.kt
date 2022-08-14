@@ -6,8 +6,9 @@ import androidx.lifecycle.LiveData
 interface SearchViewModel {
     val allWordsLiveData: LiveData<Cursor>
     val completeLiveData: LiveData<Unit>
+    val isLoadingLiveData: LiveData<Boolean>
 
     fun loadAllWords()
-    fun onCLickRememberBtn(id: Int)
+    fun onCLickRememberBtn(id: Long, isRemember: Int)
     fun searchWord(query: String)
 }

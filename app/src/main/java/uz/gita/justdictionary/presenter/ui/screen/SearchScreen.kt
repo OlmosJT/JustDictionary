@@ -10,11 +10,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -35,7 +32,6 @@ import uz.gita.justdictionary.databinding.ScreenSearchBinding
 import uz.gita.justdictionary.presenter.ui.adapter.CursorAdapter
 import uz.gita.justdictionary.presenter.viewmodel.SearchViewModel
 import uz.gita.justdictionary.presenter.viewmodel.impl.SearchViewModelImpl
-import java.util.*
 
 @AndroidEntryPoint
 class SearchScreen: Fragment(R.layout.screen_search) {
@@ -56,15 +52,16 @@ class SearchScreen: Fragment(R.layout.screen_search) {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.recyclerWords.adapter = adapter
         binding.recyclerWords.layoutManager = LinearLayoutManager(requireContext())
         viewModel.loadAllWords()
 
-        adapter.setOnClickRememberListener {
-            viewModel.onCLickRememberBtn(id)
+        adapter.setOnClickRememberListener { _id, _isRemember, _cursor ->
+            viewModel.onCLickRememberBtn(_id,_isRemember)
         }
+
 
         // Searchview
         binding.searchView.apply {
@@ -75,7 +72,7 @@ class SearchScreen: Fragment(R.layout.screen_search) {
 //            isIconified = false
             setOnQueryTextListener(object: SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    handler.removeCallbacksAndMessages(null)
+                    if(handler != null )handler.removeCallbacksAndMessages(null)
                     if(query.isNullOrBlank()) viewModel.loadAllWords()
                     else {
                         viewModel.searchWord(query)
@@ -84,8 +81,8 @@ class SearchScreen: Fragment(R.layout.screen_search) {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    handler.removeCallbacksAndMessages(null)
-                    handler.postDelayed({
+                    if(handler != null )handler.removeCallbacksAndMessages(null)
+                    if(handler != null )handler.postDelayed({
                         if(newText.isNullOrBlank()) viewModel.loadAllWords()
                         else {
                             viewModel.searchWord(newText)
@@ -132,13 +129,19 @@ class SearchScreen: Fragment(R.layout.screen_search) {
             adapter.submitCursor(it)
         })
 
-        viewModel.completeLiveData.observe(viewLifecycleOwner, Observer<Unit> {
-            adapter.notifyDataSetChanged()
+        viewModel.completeLiveData.observe(viewLifecycleOwner, Observer<Unit>{
+            viewModel.searchWord(binding.searchView.query.toString())
         })
-    }
+
+        viewModel.isLoadingLiveData.observe(viewLifecycleOwner, Observer<Boolean>{
+            if(it) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.GONE
+        })
+
+    } // end of OnViewCreated
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacksAndMessages(null)
+        if(handler != null ) handler.removeCallbacksAndMessages(null)
     }
 }

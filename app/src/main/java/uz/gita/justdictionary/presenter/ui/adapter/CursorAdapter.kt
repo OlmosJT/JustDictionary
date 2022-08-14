@@ -12,7 +12,7 @@ import uz.gita.justdictionary.databinding.ItemWordBinding
 
 class CursorAdapter: RecyclerView.Adapter<CursorAdapter.WordViewHolder>() {
     private var cursor: Cursor? = null
-    private var onClickRememberListener:((Int)-> Unit) ?= null
+    private var onClickRememberListener:((Long, Int, Cursor)-> Unit) ?= null
 
     @SuppressLint("NotifyDataSetChanged")
     fun submitCursor(_cursor: Cursor) {
@@ -27,8 +27,19 @@ class CursorAdapter: RecyclerView.Adapter<CursorAdapter.WordViewHolder>() {
             binding.btnSave.setOnClickListener {
                 cursor?.let {
                     it.moveToPosition(absoluteAdapterPosition)
-                    val id = it.getInt(it.getColumnIndex("id"))
-                    onClickRememberListener?.invoke(id)
+                    val id = it.getLong(it.getColumnIndex("id"))
+                    onClickRememberListener?.invoke(id, it.getInt(it.getColumnIndex("isRemember")), it)
+                    notifyItemChanged(absoluteAdapterPosition)
+                }
+            }
+
+            binding.word.setOnClickListener {
+                binding.expandableLayout.apply {
+                    if(expansion == 1f)
+                        collapse()
+                    else{
+                        expand()
+                    }
                 }
             }
         }
@@ -39,6 +50,7 @@ class CursorAdapter: RecyclerView.Adapter<CursorAdapter.WordViewHolder>() {
                 it.moveToPosition(absoluteAdapterPosition)
                 binding.word.text = it.getString(it.getColumnIndex("word"))
                 binding.wordType.text = it.getString(it.getColumnIndex("wordtype"))
+                binding.description.text = it.getString(it.getColumnIndex("definition"))
                 if(it.getInt(it.getColumnIndex("isRemember")) == 0)
                     binding.btnSave.setImageResource(R.drawable.ic_unsave)
                 else
@@ -59,7 +71,7 @@ class CursorAdapter: RecyclerView.Adapter<CursorAdapter.WordViewHolder>() {
         return if(cursor == null) 0 else cursor!!.count
     }
 
-    fun setOnClickRememberListener(block: (Int) -> Unit) {
+    fun setOnClickRememberListener(block: (Long, Int, Cursor) -> Unit) {
         onClickRememberListener = block
     }
 
