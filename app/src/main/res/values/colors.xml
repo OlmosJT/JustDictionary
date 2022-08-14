@@ -10,4 +10,5 @@
     <color name="background">#fefcfd</color>
     <color name="gray">#757575</color>
     <color name="lightBlack">#141414</color>
+    <color name="btnActive">#03A9F4</color>
 </resources>

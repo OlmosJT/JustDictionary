@@ -15,6 +15,6 @@ interface DictionaryDao {
     @Query("UPDATE entries SET isRemember = 0 WHERE id =:id")
     fun forgetWord(id: Int)
 
-    @Query("SELECT * FROM entries WHERE word LIKE '%' || :query || '%' ")
+    @Query("SELECT * FROM entries WHERE word LIKE  :query || '%' ")
     fun searchWord(query: String): Cursor
 }
